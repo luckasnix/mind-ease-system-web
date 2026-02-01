@@ -1,0 +1,286 @@
+/* MindEase Design System - Cognitive Accessibility First */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Nunito:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Core calm palette - soft and non-aggressive */
+    --background: 150 20% 98%;
+    --foreground: 200 15% 20%;
+
+    --card: 150 25% 99%;
+    --card-foreground: 200 15% 20%;
+
+    --popover: 150 25% 99%;
+    --popover-foreground: 200 15% 20%;
+
+    /* Primary - Calm teal/sage */
+    --primary: 168 45% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-soft: 168 35% 92%;
+
+    /* Secondary - Warm lavender */
+    --secondary: 270 30% 94%;
+    --secondary-foreground: 270 25% 35%;
+
+    /* Muted - Subtle grays with warmth */
+    --muted: 160 15% 95%;
+    --muted-foreground: 200 10% 50%;
+
+    /* Accent - Soft coral for gentle emphasis */
+    --accent: 25 70% 92%;
+    --accent-foreground: 25 60% 40%;
+
+    /* Status colors - softer versions */
+    --success: 145 50% 88%;
+    --success-foreground: 145 50% 30%;
+    --warning: 40 70% 90%;
+    --warning-foreground: 40 60% 35%;
+    --destructive: 0 50% 92%;
+    --destructive-foreground: 0 50% 40%;
+
+    /* UI Elements */
+    --border: 160 20% 90%;
+    --input: 160 20% 92%;
+    --ring: 168 45% 45%;
+    --radius: 1rem;
+
+    /* Cognitive UI specific */
+    --focus-ring: 168 50% 60%;
+    --task-todo: 200 40% 94%;
+    --task-progress: 168 40% 92%;
+    --task-done: 145 40% 92%;
+
+    /* Sidebar */
+    --sidebar-background: 150 25% 97%;
+    --sidebar-foreground: 200 15% 35%;
+    --sidebar-primary: 168 45% 45%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 168 35% 92%;
+    --sidebar-accent-foreground: 168 45% 35%;
+    --sidebar-border: 160 20% 90%;
+    --sidebar-ring: 168 45% 45%;
+
+    /* Spacing scale for cognitive comfort */
+    --space-cognitive: 1.5rem;
+    --space-breathe: 2.5rem;
+
+    /* Animation timing - slow and calm */
+    --transition-calm: 400ms cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-gentle: 300ms ease-out;
+  }
+
+  .dark {
+    --background: 200 20% 10%;
+    --foreground: 150 20% 95%;
+
+    --card: 200 20% 12%;
+    --card-foreground: 150 20% 95%;
+
+    --popover: 200 20% 12%;
+    --popover-foreground: 150 20% 95%;
+
+    --primary: 168 40% 50%;
+    --primary-foreground: 200 20% 10%;
+    --primary-soft: 168 30% 20%;
+
+    --secondary: 270 20% 20%;
+    --secondary-foreground: 270 20% 85%;
+
+    --muted: 200 15% 18%;
+    --muted-foreground: 200 10% 60%;
+
+    --accent: 25 40% 25%;
+    --accent-foreground: 25 50% 85%;
+
+    --success: 145 40% 20%;
+    --success-foreground: 145 40% 85%;
+    --warning: 40 50% 25%;
+    --warning-foreground: 40 50% 85%;
+    --destructive: 0 40% 25%;
+    --destructive-foreground: 0 40% 85%;
+
+    --border: 200 15% 20%;
+    --input: 200 15% 18%;
+    --ring: 168 40% 50%;
+
+    --task-todo: 200 30% 18%;
+    --task-progress: 168 30% 18%;
+    --task-done: 145 30% 18%;
+
+    --sidebar-background: 200 20% 8%;
+    --sidebar-foreground: 150 15% 85%;
+    --sidebar-primary: 168 40% 50%;
+    --sidebar-primary-foreground: 200 20% 10%;
+    --sidebar-accent: 168 25% 18%;
+    --sidebar-accent-foreground: 168 35% 80%;
+    --sidebar-border: 200 15% 18%;
+    --sidebar-ring: 168 40% 50%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Nunito', 'Inter', system-ui, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+  }
+
+  /* Improved focus states for accessibility */
+  *:focus-visible {
+    @apply outline-none ring-2 ring-offset-2;
+    ring-color: hsl(var(--focus-ring));
+    ring-offset-color: hsl(var(--background));
+  }
+}
+
+@layer components {
+  /* Cognitive-friendly card styles */
+  .card-cognitive {
+    @apply rounded-2xl p-6 transition-all;
+    background: hsl(var(--card));
+    box-shadow: 0 2px 12px -4px hsl(var(--foreground) / 0.06);
+    transition: var(--transition-calm);
+  }
+
+  .card-cognitive:hover {
+    box-shadow: 0 4px 20px -6px hsl(var(--foreground) / 0.1);
+    transform: translateY(-2px);
+  }
+
+  /* Soft button styles */
+  .btn-calm {
+    @apply inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 font-medium transition-all;
+    transition: var(--transition-gentle);
+  }
+
+  .btn-calm-primary {
+    @apply btn-calm text-primary-foreground;
+    background: hsl(var(--primary));
+  }
+
+  .btn-calm-primary:hover {
+    filter: brightness(1.05);
+    transform: translateY(-1px);
+  }
+
+  .btn-calm-secondary {
+    @apply btn-calm text-secondary-foreground;
+    background: hsl(var(--secondary));
+  }
+
+  .btn-calm-ghost {
+    @apply btn-calm text-foreground;
+    background: transparent;
+  }
+
+  .btn-calm-ghost:hover {
+    background: hsl(var(--muted));
+  }
+
+  /* Task column styles */
+  .task-column {
+    @apply rounded-2xl p-4;
+    min-height: 400px;
+  }
+
+  .task-column-todo {
+    background: hsl(var(--task-todo));
+  }
+
+  .task-column-progress {
+    background: hsl(var(--task-progress));
+  }
+
+  .task-column-done {
+    background: hsl(var(--task-done));
+  }
+
+  /* Cognitive control styles */
+  .control-card {
+    @apply rounded-2xl p-5 border border-border/50;
+    background: hsl(var(--card));
+  }
+
+  /* Breathing animation for focus indicators */
+  @keyframes breathe {
+    0%, 100% {
+      opacity: 0.6;
+      transform: scale(1);
+    }
+    50% {
+      opacity: 1;
+      transform: scale(1.02);
+    }
+  }
+
+  .animate-breathe {
+    animation: breathe 4s ease-in-out infinite;
+  }
+
+  /* Gentle fade animations */
+  @keyframes fade-up {
+    from {
+      opacity: 0;
+      transform: translateY(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .animate-fade-up {
+    animation: fade-up 0.5s ease-out forwards;
+  }
+
+  /* Stagger children animations */
+  .stagger-children > * {
+    opacity: 0;
+    animation: fade-up 0.4s ease-out forwards;
+  }
+
+  .stagger-children > *:nth-child(1) { animation-delay: 0.1s; }
+  .stagger-children > *:nth-child(2) { animation-delay: 0.2s; }
+  .stagger-children > *:nth-child(3) { animation-delay: 0.3s; }
+  .stagger-children > *:nth-child(4) { animation-delay: 0.4s; }
+  .stagger-children > *:nth-child(5) { animation-delay: 0.5s; }
+  .stagger-children > *:nth-child(6) { animation-delay: 0.6s; }
+}
+
+@layer utilities {
+  /* Cognitive-friendly spacing utilities */
+  .space-cognitive {
+    gap: var(--space-cognitive);
+  }
+
+  .space-breathe {
+    gap: var(--space-breathe);
+  }
+
+  /* Text utilities for readability */
+  .text-readable {
+    @apply leading-relaxed tracking-wide;
+    max-width: 65ch;
+  }
+
+  /* Reduce motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
