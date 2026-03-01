@@ -1,6 +1,7 @@
-import { useState } from "react";
-import { NavLink, useLocation } from "react-router-dom";
-import { cn } from "@/shared/lib/utils";
+import { useState } from 'react';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
+import { cn } from '@/shared/lib/utils';
+import { authRepository } from '@/data/repositories/authRepository';
 import {
   Brain,
   CheckSquare,
@@ -9,45 +10,53 @@ import {
   Menu,
   X,
   Sparkles,
-} from "lucide-react";
+  LogOut,
+} from 'lucide-react';
 
 const navItems = [
   {
-    title: "Painel Cognitivo",
-    path: "/",
+    title: 'Painel Cognitivo',
+    path: '/',
     icon: Brain,
-    description: "Controle sua interface",
+    description: 'Controle sua interface',
   },
   {
-    title: "Tarefas",
-    path: "/tasks",
+    title: 'Tarefas',
+    path: '/tasks',
     icon: CheckSquare,
-    description: "Organize suas atividades",
+    description: 'Organize suas atividades',
   },
   {
-    title: "Perfil",
-    path: "/profile",
+    title: 'Perfil',
+    path: '/profile',
     icon: User,
-    description: "Suas informações",
+    description: 'Suas informações',
   },
   {
-    title: "Configurações",
-    path: "/settings",
+    title: 'Configurações',
+    path: '/settings',
     icon: Settings,
-    description: "Personalize tudo",
+    description: 'Personalize tudo',
   },
 ];
 
 export function Sidebar() {
   const [isOpen, setIsOpen] = useState(true);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    await authRepository.signOut();
+    localStorage.clear();
+    navigate('/login');
+  };
 
   return (
     <>
       {/* Mobile overlay */}
       {isOpen && (
         <div
-          className="fixed inset-0 bg-foreground/10 backdrop-blur-sm z-40 lg:hidden"
+          className='fixed inset-0 bg-foreground/10 backdrop-blur-sm z-40 lg:hidden'
           onClick={() => setIsOpen(false)}
         />
       )}
@@ -55,29 +64,31 @@ export function Sidebar() {
       {/* Mobile toggle button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="fixed top-4 left-4 z-50 lg:hidden p-3 rounded-xl bg-card shadow-lg border border-border/50 transition-all duration-300 hover:bg-muted"
-        aria-label={isOpen ? "Fechar menu" : "Abrir menu"}
+        className='fixed top-4 left-4 z-50 lg:hidden p-3 rounded-xl bg-card shadow-lg border border-border/50 transition-all duration-300 hover:bg-muted'
+        aria-label={isOpen ? 'Fechar menu' : 'Abrir menu'}
       >
-        {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+        {isOpen ? <X className='w-5 h-5' /> : <Menu className='w-5 h-5' />}
       </button>
 
       {/* Sidebar */}
       <aside
         className={cn(
-          "fixed left-0 top-0 h-full bg-sidebar z-50 transition-all duration-500 ease-calm border-r border-sidebar-border",
-          isOpen ? "w-72 translate-x-0" : "-translate-x-full lg:translate-x-0 lg:w-20"
+          'fixed left-0 top-0 h-full bg-sidebar z-50 transition-all duration-500 ease-calm border-r border-sidebar-border',
+          isOpen
+            ? 'w-72 translate-x-0'
+            : '-translate-x-full lg:translate-x-0 lg:w-20',
         )}
       >
-        <div className="flex flex-col h-full p-4">
+        <div className='flex flex-col h-full p-4'>
           {/* Logo */}
-          <div className="flex items-center gap-3 px-3 py-4 mb-6">
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center">
-              <Sparkles className="w-5 h-5 text-primary-foreground" />
+          <div className='flex items-center gap-3 px-3 py-4 mb-6'>
+            <div className='w-10 h-10 rounded-xl bg-primary flex items-center justify-center'>
+              <Sparkles className='w-5 h-5 text-primary-foreground' />
             </div>
             <span
               className={cn(
-                "font-display font-bold text-xl text-sidebar-foreground transition-opacity duration-300",
-                !isOpen && "lg:opacity-0 lg:w-0"
+                'font-display font-bold text-xl text-sidebar-foreground transition-opacity duration-300',
+                !isOpen && 'lg:opacity-0 lg:w-0',
               )}
             >
               MindEase
@@ -87,14 +98,14 @@ export function Sidebar() {
           {/* Desktop collapse button */}
           <button
             onClick={() => setIsOpen(!isOpen)}
-            className="hidden lg:flex absolute -right-3 top-20 w-6 h-6 rounded-full bg-card border border-border shadow-md items-center justify-center hover:bg-muted transition-colors"
-            aria-label={isOpen ? "Recolher menu" : "Expandir menu"}
+            className='hidden lg:flex absolute -right-3 top-20 w-6 h-6 rounded-full bg-card border border-border shadow-md items-center justify-center hover:bg-muted transition-colors'
+            aria-label={isOpen ? 'Recolher menu' : 'Expandir menu'}
           >
-            <Menu className="w-3 h-3" />
+            <Menu className='w-3 h-3' />
           </button>
 
           {/* Navigation */}
-          <nav className="flex-1 space-y-2">
+          <nav className='flex-1 space-y-2'>
             {navItems.map((item) => {
               const isActive = location.pathname === item.path;
               return (
@@ -102,26 +113,28 @@ export function Sidebar() {
                   key={item.path}
                   to={item.path}
                   className={cn(
-                    "flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group",
+                    'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 group',
                     isActive
-                      ? "bg-sidebar-accent text-sidebar-accent-foreground"
-                      : "text-sidebar-foreground hover:bg-sidebar-accent/50"
+                      ? 'bg-sidebar-accent text-sidebar-accent-foreground'
+                      : 'text-sidebar-foreground hover:bg-sidebar-accent/50',
                   )}
                 >
                   <item.icon
                     className={cn(
-                      "w-5 h-5 flex-shrink-0 transition-colors",
-                      isActive ? "text-sidebar-primary" : "text-sidebar-foreground"
+                      'w-5 h-5 flex-shrink-0 transition-colors',
+                      isActive
+                        ? 'text-sidebar-primary'
+                        : 'text-sidebar-foreground',
                     )}
                   />
                   <div
                     className={cn(
-                      "flex flex-col transition-opacity duration-300",
-                      !isOpen && "lg:opacity-0 lg:w-0 lg:overflow-hidden"
+                      'flex flex-col transition-opacity duration-300',
+                      !isOpen && 'lg:opacity-0 lg:w-0 lg:overflow-hidden',
                     )}
                   >
-                    <span className="font-medium text-sm">{item.title}</span>
-                    <span className="text-xs text-muted-foreground">
+                    <span className='font-medium text-sm'>{item.title}</span>
+                    <span className='text-xs text-muted-foreground'>
                       {item.description}
                     </span>
                   </div>
@@ -130,16 +143,38 @@ export function Sidebar() {
             })}
           </nav>
 
-          {/* Footer hint */}
-          <div
-            className={cn(
-              "px-4 py-3 rounded-xl bg-primary-soft transition-opacity duration-300",
-              !isOpen && "lg:opacity-0"
-            )}
-          >
-            <p className="text-xs text-muted-foreground leading-relaxed">
-              💡 Use o painel cognitivo para ajustar a complexidade da interface ao seu ritmo.
-            </p>
+          <div className='flex flex-col gap-3'>
+            {/* Footer hint */}
+            <div
+              className={cn(
+                'px-4 py-3 rounded-xl bg-primary-soft transition-opacity duration-300',
+                !isOpen && 'lg:opacity-0',
+              )}
+            >
+              <p className='text-xs text-muted-foreground leading-relaxed'>
+                💡 Use o painel cognitivo para ajustar a complexidade da
+                interface ao seu ritmo.
+              </p>
+            </div>
+
+            {/* Logout button */}
+            <button
+              onClick={handleLogout}
+              className={cn(
+                'flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 text-destructive-foreground hover:bg-destructive/60 mb-3',
+                !isOpen && 'lg:justify-center',
+              )}
+            >
+              <LogOut className='w-5 h-5 flex-shrink-0' />
+              <span
+                className={cn(
+                  'font-medium text-sm transition-opacity duration-300',
+                  !isOpen && 'lg:opacity-0 lg:w-0 lg:overflow-hidden',
+                )}
+              >
+                Sair
+              </span>
+            </button>
           </div>
         </div>
       </aside>
