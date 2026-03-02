@@ -40,6 +40,24 @@ export default function Register() {
       return;
     }
 
+    if (!/[a-z]/.test(password)) {
+      toast({
+        title: 'Senha inválida',
+        description: 'A senha deve conter pelo menos uma letra minúscula.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
+    if (!/[A-Z]/.test(password)) {
+      toast({
+        title: 'Senha inválida',
+        description: 'A senha deve conter pelo menos uma letra maiúscula.',
+        variant: 'destructive',
+      });
+      return;
+    }
+
     if (password !== confirmPassword) {
       toast({
         title: 'Senhas não coincidem',
@@ -55,9 +73,9 @@ export default function Register() {
       await authRepository.signUp(name, email, password);
       toast({
         title: 'Conta criada!',
-        description: 'Verifique seu email para confirmar o cadastro.',
+        description: 'Bem-vindo ao MindEase.',
       });
-      navigate('/login');
+      navigate('/');
     } catch (error) {
       toast({
         title: 'Erro ao criar conta',
