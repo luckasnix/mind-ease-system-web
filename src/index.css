@@ -64,9 +64,13 @@
     --sidebar-border: 160 20% 90%;
     --sidebar-ring: 168 45% 45%;
 
+    /* User visual settings (overridden by JS) */
+    --user-spacing: 1;
+    --user-contrast: 1;
+
     /* Spacing scale for cognitive comfort */
-    --space-cognitive: 1.5rem;
-    --space-breathe: 2.5rem;
+    --space-cognitive: calc(1.5rem * var(--user-spacing));
+    --space-breathe: calc(2.5rem * var(--user-spacing));
 
     /* Animation timing - slow and calm */
     --transition-calm: 400ms cubic-bezier(0.4, 0, 0.2, 1);
@@ -131,8 +135,9 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Nunito', 'Inter', system-ui, sans-serif;
     font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
-    line-height: 1.7;
-    letter-spacing: 0.01em;
+    line-height: calc(1.7 * var(--user-spacing));
+    letter-spacing: calc(0.01em * var(--user-spacing));
+    filter: contrast(var(--user-contrast));
   }
 
   /* Improved focus states for accessibility */
@@ -315,6 +320,193 @@
     max-width: 65ch;
   }
 
+  /*
+   * Dynamic spacing via --user-spacing.
+   * Overrides Tailwind spacing utilities inside the app so the
+   * "Espaçamento" slider in Settings produces a visible change
+   * across ALL screens (paddings, gaps, margins).
+   *
+   * We use `body` as the scope so every page is affected.
+   * We only scale by the delta from 1 so the effect feels proportional.
+   */
+
+  /* ---- Main layout padding ---- */
+  main > div {
+    padding: calc(1.5rem * var(--user-spacing));
+  }
+  @media (min-width: 1024px) {
+    main > div {
+      padding: calc(2.5rem * var(--user-spacing));
+    }
+  }
+
+  /* ---- Component paddings ---- */
+  .control-card,
+  .card-cognitive {
+    padding: calc(1.25rem * var(--user-spacing));
+  }
+  .task-column {
+    padding: calc(1rem * var(--user-spacing));
+  }
+
+  /* ---- gap-* utilities ---- */
+  body .gap-2 {
+    gap: calc(0.5rem * var(--user-spacing));
+  }
+  body .gap-3 {
+    gap: calc(0.75rem * var(--user-spacing));
+  }
+  body .gap-4 {
+    gap: calc(1rem * var(--user-spacing));
+  }
+  body .gap-5 {
+    gap: calc(1.25rem * var(--user-spacing));
+  }
+  body .gap-6 {
+    gap: calc(1.5rem * var(--user-spacing));
+  }
+  body .gap-8 {
+    gap: calc(2rem * var(--user-spacing));
+  }
+  @media (min-width: 1024px) {
+    body .lg\:gap-6 {
+      gap: calc(1.5rem * var(--user-spacing));
+    }
+    body .lg\:gap-8 {
+      gap: calc(2rem * var(--user-spacing));
+    }
+  }
+
+  /* ---- space-y-* utilities ---- */
+  body .space-y-2 > * + * {
+    margin-top: calc(0.5rem * var(--user-spacing));
+  }
+  body .space-y-3 > * + * {
+    margin-top: calc(0.75rem * var(--user-spacing));
+  }
+  body .space-y-4 > * + * {
+    margin-top: calc(1rem * var(--user-spacing));
+  }
+  body .space-y-5 > * + * {
+    margin-top: calc(1.25rem * var(--user-spacing));
+  }
+  body .space-y-6 > * + * {
+    margin-top: calc(1.5rem * var(--user-spacing));
+  }
+  body .space-y-8 > * + * {
+    margin-top: calc(2rem * var(--user-spacing));
+  }
+
+  /* ---- Vertical margin utilities (mb-*) ---- */
+  body .mb-1 {
+    margin-bottom: calc(0.25rem * var(--user-spacing));
+  }
+  body .mb-2 {
+    margin-bottom: calc(0.5rem * var(--user-spacing));
+  }
+  body .mb-3 {
+    margin-bottom: calc(0.75rem * var(--user-spacing));
+  }
+  body .mb-4 {
+    margin-bottom: calc(1rem * var(--user-spacing));
+  }
+  body .mb-6 {
+    margin-bottom: calc(1.5rem * var(--user-spacing));
+  }
+  body .mb-8 {
+    margin-bottom: calc(2rem * var(--user-spacing));
+  }
+  body .mb-10 {
+    margin-bottom: calc(2.5rem * var(--user-spacing));
+  }
+
+  body .mt-2 {
+    margin-top: calc(0.5rem * var(--user-spacing));
+  }
+  body .mt-4 {
+    margin-top: calc(1rem * var(--user-spacing));
+  }
+  body .mt-6 {
+    margin-top: calc(1.5rem * var(--user-spacing));
+  }
+  body .mt-8 {
+    margin-top: calc(2rem * var(--user-spacing));
+  }
+  body .mt-10 {
+    margin-top: calc(2.5rem * var(--user-spacing));
+  }
+
+  body .my-6 {
+    margin-top: calc(1.5rem * var(--user-spacing));
+    margin-bottom: calc(1.5rem * var(--user-spacing));
+  }
+
+  /* ---- Padding utilities (p-*, px-*, py-*) ---- */
+  body .p-2 {
+    padding: calc(0.5rem * var(--user-spacing));
+  }
+  body .p-3 {
+    padding: calc(0.75rem * var(--user-spacing));
+  }
+  body .p-4 {
+    padding: calc(1rem * var(--user-spacing));
+  }
+  body .p-5 {
+    padding: calc(1.25rem * var(--user-spacing));
+  }
+  body .p-6 {
+    padding: calc(1.5rem * var(--user-spacing));
+  }
+
+  body .px-2 {
+    padding-left: calc(0.5rem * var(--user-spacing));
+    padding-right: calc(0.5rem * var(--user-spacing));
+  }
+  body .px-3 {
+    padding-left: calc(0.75rem * var(--user-spacing));
+    padding-right: calc(0.75rem * var(--user-spacing));
+  }
+  body .px-4 {
+    padding-left: calc(1rem * var(--user-spacing));
+    padding-right: calc(1rem * var(--user-spacing));
+  }
+  body .px-6 {
+    padding-left: calc(1.5rem * var(--user-spacing));
+    padding-right: calc(1.5rem * var(--user-spacing));
+  }
+
+  body .py-1 {
+    padding-top: calc(0.25rem * var(--user-spacing));
+    padding-bottom: calc(0.25rem * var(--user-spacing));
+  }
+  body .py-2 {
+    padding-top: calc(0.5rem * var(--user-spacing));
+    padding-bottom: calc(0.5rem * var(--user-spacing));
+  }
+  body .py-3 {
+    padding-top: calc(0.75rem * var(--user-spacing));
+    padding-bottom: calc(0.75rem * var(--user-spacing));
+  }
+  body .py-4 {
+    padding-top: calc(1rem * var(--user-spacing));
+    padding-bottom: calc(1rem * var(--user-spacing));
+  }
+  body .py-6 {
+    padding-top: calc(1.5rem * var(--user-spacing));
+    padding-bottom: calc(1.5rem * var(--user-spacing));
+  }
+  body .py-8 {
+    padding-top: calc(2rem * var(--user-spacing));
+    padding-bottom: calc(2rem * var(--user-spacing));
+  }
+  body .py-1\.5 {
+    padding-top: calc(0.375rem * var(--user-spacing));
+    padding-bottom: calc(0.375rem * var(--user-spacing));
+  }
+  body .pt-4 {
+    padding-top: calc(1rem * var(--user-spacing));
+  }
+
   /* Reduce motion preference */
   @media (prefers-reduced-motion: reduce) {
     *,
@@ -325,4 +517,24 @@
       transition-duration: 0.01ms !important;
     }
   }
+}
+
+/* User setting: disable all animations */
+.no-animations *,
+.no-animations *::before,
+.no-animations *::after {
+  animation-duration: 0ms !important;
+  animation-delay: 0ms !important;
+  transition-duration: 0ms !important;
+}
+
+/* User setting: reduce visual stimuli */
+.reduce-stimuli .card-cognitive:hover {
+  transform: none;
+  box-shadow: 0 2px 12px -4px hsl(var(--foreground) / 0.06);
+}
+
+.reduce-stimuli .animate-breathe,
+.reduce-stimuli .animate-meditate {
+  animation: none;
 }

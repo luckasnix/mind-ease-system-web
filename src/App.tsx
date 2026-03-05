@@ -7,8 +7,13 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { PrivateRoute } from './presentation/components/PrivateRoute';
 import { PublicRoute } from './presentation/components/PublicRoute';
 import { LoadingScreen } from './presentation/components/LoadingScreen';
+import { UserSettingsProvider } from './presentation/contexts/UserSettingsContext';
 
 const Index = lazy(() => import('./presentation/pages/Index'));
+const Dashboard = lazy(() => import('./presentation/pages/Dashboard'));
+const CognitivePanel = lazy(
+  () => import('./presentation/pages/CognitivePanel'),
+);
 const Tasks = lazy(() => import('./presentation/pages/Tasks'));
 const Profile = lazy(() => import('./presentation/pages/Profile'));
 const Settings = lazy(() => import('./presentation/pages/Settings'));
@@ -34,10 +39,24 @@ const App = () => (
 
             {/* Private routes - redirect to /login if not logged in */}
             <Route element={<PrivateRoute />}>
-              <Route path='/' element={<Index />} />
-              <Route path='/tasks' element={<Tasks />} />
-              <Route path='/profile' element={<Profile />} />
-              <Route path='/settings' element={<Settings />} />
+              <Route
+                path='/*'
+                element={
+                  <UserSettingsProvider>
+                    <Routes>
+                      <Route path='/' element={<Index />} />
+                      <Route path='/dashboard' element={<Dashboard />} />
+                      <Route
+                        path='/cognitive-panel'
+                        element={<CognitivePanel />}
+                      />
+                      <Route path='/tasks' element={<Tasks />} />
+                      <Route path='/profile' element={<Profile />} />
+                      <Route path='/settings' element={<Settings />} />
+                    </Routes>
+                  </UserSettingsProvider>
+                }
+              />
             </Route>
 
             <Route path='*' element={<NotFound />} />

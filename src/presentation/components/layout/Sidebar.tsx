@@ -11,12 +11,19 @@ import {
   X,
   Sparkles,
   LogOut,
+  LayoutDashboard,
 } from 'lucide-react';
 
 const navItems = [
   {
-    title: 'Painel Cognitivo',
+    title: 'Dashboard',
     path: '/',
+    icon: LayoutDashboard,
+    description: 'Visão geral',
+  },
+  {
+    title: 'Painel Cognitivo',
+    path: '/cognitive-panel',
     icon: Brain,
     description: 'Controle sua interface',
   },
