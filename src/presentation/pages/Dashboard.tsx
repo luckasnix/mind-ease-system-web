@@ -54,7 +54,7 @@ export default function Dashboard() {
             .length,
           progress: tasks.filter(
             (t: { status: string }) =>
-              t.status === 'in_progress' || t.status === 'progress',
+              t.status === 'in_progress',
           ).length,
           done: tasks.filter((t: { status: string }) => t.status === 'done')
             .length,

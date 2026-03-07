@@ -1,4 +1,4 @@
-import { supabase } from '../datasources/supabase'
+import { supabase } from '@/data/datasources/supabase'
 import type { UserSettingsUpdate } from '@/domain/entities/user-settings'
 
 export const userSettingsRepository = {

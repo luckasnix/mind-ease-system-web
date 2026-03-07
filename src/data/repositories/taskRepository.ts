@@ -1,38 +1,53 @@
-import { supabase } from '../datasources/supabase'
-import type { TaskUpdate } from '@/domain/entities/tasks'
+import { supabase } from '@/data/datasources/supabase'
+import type { Task, TaskUpdate } from '@/domain/entities/tasks'
 
 export const taskRepository = {
-  async getTasks() {
+  async getTasks(): Promise<Task[]> {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('Usuário não autenticado')
+
     const { data, error } = await supabase
       .from('tasks')
-      .select('*')
+      .select('*, subtasks(*)')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false })
 
     if (error) throw new Error(error.message)
 
-    return data
+    return (data ?? []).map((task) => ({
+      ...task,
+      subtasks: task.subtasks ?? [],
+    }))
   },
 
-  async createTask(title: string, description?: string) {
+  async createTask(title: string, description?: string): Promise<Task> {
+    const { data: { user } } = await supabase.auth.getUser()
+    if (!user) throw new Error('Usuário não autenticado')
+
+    const id = crypto.randomUUID()
+
     const { data, error } = await supabase
       .from('tasks')
-      .insert([{ title, description }])
-      .select()
+      .insert([{ id, user_id: user.id, title, description, status: 'todo' }])
+      .select('*, subtasks(*)')
+      .single()
 
     if (error) throw new Error(error.message)
 
-    return data
+    return { ...data, subtasks: data.subtasks ?? [] }
   },
 
-  async updateTask(taskId: string, updates: TaskUpdate) {
+  async updateTask(taskId: string, updates: TaskUpdate): Promise<Task> {
     const { data, error } = await supabase
       .from('tasks')
-      .update(updates)
+      .update({ ...updates, updated_at: new Date().toISOString() })
       .eq('id', taskId)
-      .select()
+      .select('*, subtasks(*)')
+      .single()
 
     if (error) throw new Error(error.message)
 
-    return data
+    return { ...data, subtasks: data.subtasks ?? [] }
   },
 
   async deleteTask(taskId: string) {
