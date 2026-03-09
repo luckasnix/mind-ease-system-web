@@ -1,4 +1,4 @@
-import { supabase } from '../datasources/supabase';
+import { supabase } from '@/data/datasources/supabase';
 
 export const authRepository = {
   async signUp(name: string, email: string, password: string) {

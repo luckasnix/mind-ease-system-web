@@ -1,4 +1,4 @@
-import { supabase } from '../datasources/supabase';
+import { supabase } from '@/data/datasources/supabase';
 import type { ProfileUpdate } from '@/domain/entities/profile';
 
 export const profileRepository = {

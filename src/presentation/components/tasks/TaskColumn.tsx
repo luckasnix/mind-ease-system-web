@@ -7,19 +7,20 @@ interface TaskColumnProps {
   title: string;
   status: Task["status"];
   tasks: Task[];
-  onStepToggle: (taskId: string, stepId: string) => void;
+  onSubtaskToggle: (taskId: string, subtaskId: string) => void;
+  onAddSubtask: (taskId: string, title: string) => void;
   onStatusChange: (taskId: string, status: Task["status"]) => void;
 }
 
-const columnStyles = {
+const columnStyles: Record<Task["status"], string> = {
   todo: "task-column-todo",
-  progress: "task-column-progress",
+  in_progress: "task-column-progress",
   done: "task-column-done",
 };
 
-const emptyMessages = {
+const emptyMessages: Record<Task["status"], string> = {
   todo: "Nenhuma tarefa pendente",
-  progress: "Nenhuma tarefa em andamento",
+  in_progress: "Nenhuma tarefa em andamento",
   done: "Nenhuma tarefa concluída",
 };
 
@@ -27,7 +28,8 @@ export function TaskColumn({
   title,
   status,
   tasks,
-  onStepToggle,
+  onSubtaskToggle,
+  onAddSubtask,
   onStatusChange,
 }: TaskColumnProps) {
   const filteredTasks = tasks.filter((t) => t.status === status);
@@ -51,7 +53,8 @@ export function TaskColumn({
             <TaskCard
               key={task.id}
               task={task}
-              onStepToggle={onStepToggle}
+              onSubtaskToggle={onSubtaskToggle}
+              onAddSubtask={onAddSubtask}
               onStatusChange={onStatusChange}
             />
           ))

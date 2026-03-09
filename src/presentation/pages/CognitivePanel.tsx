@@ -5,8 +5,8 @@ import { LoadingScreen } from '@/presentation/components/LoadingScreen';
 import { useUserSettings } from '@/presentation/contexts/UserSettingsContext';
 import { AlertCircle, Brain, Sparkles } from 'lucide-react';
 import { useState } from 'react';
-import { FocusModeToggle } from '../components/dashboard/FocusModeToggle';
-import { VisualControls } from '../components/dashboard/VisualControls';
+import { FocusModeToggle } from '@/presentation/components/dashboard/FocusModeToggle';
+import { VisualControls } from '@/presentation/components/dashboard/VisualControls';
 
 export default function CognitivePanel() {
   const {
