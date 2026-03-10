@@ -2,46 +2,6 @@
 
 Sistema de gestão cognitiva para bem-estar mental.
 
-## Como editar este código?
-
-Existem várias formas de editar sua aplicação.
-
-### Use sua IDE preferida
-
-Se você quiser trabalhar localmente usando sua própria IDE, clone este repositório e faça push das alterações.
-
-O único requisito é ter Node.js e npm instalados - [instale com nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Siga estes passos:
-
-```sh
-# Passo 1: Clone o repositório usando a URL Git do projeto.
-git clone <URL_DO_SEU_GIT>
-
-# Passo 2: Navegue até o diretório do projeto.
-cd mind-ease-system-web
-
-# Passo 3: Instale as dependências necessárias.
-npm install
-
-# Passo 4: Inicie o servidor de desenvolvimento com hot-reload.
-npm run dev
-```
-
-### Edite diretamente no GitHub
-
-- Navegue até o(s) arquivo(s) desejado(s).
-- Clique no botão "Edit" (ícone de lápis) no canto superior direito.
-- Faça suas alterações e realize o commit.
-
-### Use GitHub Codespaces
-
-- Navegue até a página principal do seu repositório.
-- Clique no botão "Code" (botão verde) próximo ao canto superior direito.
-- Selecione a aba "Codespaces".
-- Clique em "New codespace" para iniciar um novo ambiente Codespace.
-- Edite os arquivos diretamente no Codespace e faça commit e push quando terminar.
-
 ## Tecnologias utilizadas
 
 Este projeto foi construído com:
@@ -49,5 +9,61 @@ Este projeto foi construído com:
 - Vite
 - TypeScript
 - React
-- shadcn-ui
+- Shadcn UI
 - Tailwind CSS
+
+## Pré-requisitos
+
+- [Node.js](https://nodejs.org/) v24 ou superior
+- npm (incluso com o Node.js)
+
+## Como executar o projeto
+
+### 1. Clone o repositório
+
+```bash
+git clone https://github.com/luckasnix/mind-ease-system-web.git
+cd mind-ease-system-web
+```
+
+### 2. Instale as dependências
+
+```bash
+npm install
+```
+
+### 3. Configure as variáveis de ambiente
+
+Copie o arquivo de exemplo e preencha com suas credenciais do Supabase:
+
+```bash
+cp .env.example .env
+```
+
+Edite o arquivo `.env` com os valores correspondentes ao seu projeto:
+
+```env
+VITE_SUPABASE_URL="https://<seu-projeto>.supabase.co"
+VITE_SUPABASE_ANON_KEY="<sua-chave-anonima>"
+```
+
+As credenciais podem ser encontradas no painel do [Supabase](https://supabase.com/dashboard), em **Project Settings > API**.
+
+### 4. Inicie o servidor de desenvolvimento
+
+```bash
+npm run dev
+```
+
+A aplicação estará disponível em `http://localhost:3000`.
+
+## Scripts disponíveis
+
+| Comando | Descrição |
+| --- | --- |
+| `npm run dev` | Inicia o servidor de desenvolvimento |
+| `npm run build` | Gera o build de produção |
+| `npm run preview` | Pré-visualiza o build de produção localmente |
+| `npm run lint` | Executa o linter (ESLint) |
+| `npm run typecheck` | Verifica os tipos TypeScript |
+| `npm run ci` | Executa lint, typecheck e build em sequência |
