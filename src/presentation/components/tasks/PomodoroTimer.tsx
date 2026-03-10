@@ -1,6 +1,18 @@
 import { useState, useEffect, useCallback } from "react";
-import { cn } from "@/shared/lib/utils";
+import { cn, FOCUS_DATE_KEY, FOCUS_TIME_KEY, getTodayDateString } from "@/shared/lib/utils";
 import { Play, Pause, RotateCcw, Coffee } from "lucide-react";
+
+function addFocusSecond() {
+  const today = getTodayDateString();
+  const storedDate = localStorage.getItem(FOCUS_DATE_KEY);
+  let current = 0;
+  if (storedDate === today) {
+    current = parseInt(localStorage.getItem(FOCUS_TIME_KEY) || "0", 10);
+  } else {
+    localStorage.setItem(FOCUS_DATE_KEY, today);
+  }
+  localStorage.setItem(FOCUS_TIME_KEY, String(current + 1));
+}
 
 interface PomodoroTimerProps {
   onBreakSuggestion?: () => void;
@@ -37,6 +49,7 @@ export function PomodoroTimer({ onBreakSuggestion }: PomodoroTimerProps) {
     if (isRunning && timeLeft > 0) {
       interval = setInterval(() => {
         setTimeLeft((t) => t - 1);
+        if (!isBreak) addFocusSecond();
       }, 1000);
     } else if (timeLeft === 0) {
       setIsRunning(false);
