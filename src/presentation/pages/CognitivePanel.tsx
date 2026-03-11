@@ -4,9 +4,17 @@ import { Layout } from '@/presentation/components/layout/Layout';
 import { LoadingScreen } from '@/presentation/components/LoadingScreen';
 import { useUserSettings } from '@/presentation/contexts/UserSettingsContext';
 import { AlertCircle, Brain, Sparkles } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { FocusModeToggle } from '@/presentation/components/dashboard/FocusModeToggle';
 import { VisualControls } from '@/presentation/components/dashboard/VisualControls';
+import { FOCUS_DATE_KEY, FOCUS_TIME_KEY, getTodayDateString } from '@/shared/lib/utils';
+
+function getAccumulatedFocusMinutes(): number {
+  const storedDate = localStorage.getItem(FOCUS_DATE_KEY);
+  if (storedDate !== getTodayDateString()) return 0;
+  const seconds = parseInt(localStorage.getItem(FOCUS_TIME_KEY) || "0", 10);
+  return Math.floor(seconds / 60);
+}
 
 export default function CognitivePanel() {
   const {
@@ -21,13 +29,22 @@ export default function CognitivePanel() {
     setContrast,
   } = useUserSettings();
 
-  const [alerts, setAlerts] = useState([
-    {
-      id: '1',
-      type: 'break' as const,
-      message: 'Você está focado há 45 minutos. Que tal uma pausa?',
-    },
-  ]);
+  const focusMinutes = useMemo(() => getAccumulatedFocusMinutes(), []);
+
+  const initialAlerts = useMemo(() => {
+    if (focusMinutes >= 60) {
+      return [
+        {
+          id: '1',
+          type: 'break' as const,
+          message: `Você está focado há ${focusMinutes} minutos hoje. Que tal uma pausa?`,
+        },
+      ];
+    }
+    return [];
+  }, [focusMinutes]);
+
+  const [alerts, setAlerts] = useState(initialAlerts);
 
   const dismissAlert = (id: string) => {
     setAlerts(alerts.filter((a) => a.id !== id));
